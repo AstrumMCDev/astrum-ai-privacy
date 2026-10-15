@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Политика конфиденциальности Astrum-AI</title>
+<meta name="description" content="Какие данные обрабатывает Discord-бот Astrum-AI проекта AstrumMC, зачем, где и сколько они хранятся и как их удалить.">
+<!--
+  Исходник страницы — docs/privacy.html в репозитории Astrum-discord-bot.
+  Сроки и шифрование здесь описаны по коду бота (MessageArchiveService, ConversationHistoryService,
+  TicketChannelService) и совпадают с ответами в заявке Discord на Message Content Intent.
+  Меняете работу бота с данными — меняйте и эту страницу, и ответы в заявке.
+-->
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1d1f24;
+    --muted: #5b616e;
+    --line: #e3e5ea;
+    --card: #f6f7f9;
+    --accent: #5865f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16171b;
+      --fg: #e8e9ec;
+      --muted: #a3a8b4;
+      --line: #2c2e35;
+      --card: #1e2026;
+      --accent: #8b94ff;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 1.75rem; line-height: 1.25; margin: 0 0 8px; }
+  h2 { font-size: 1.2rem; margin: 36px 0 8px; }
+  p, ul { margin: 8px 0; }
+  ul { padding-left: 1.2em; }
+  li { margin: 4px 0; }
+  a { color: var(--accent); }
+  .meta { color: var(--muted); margin-bottom: 24px; }
+  .lang { display: flex; gap: 12px; margin: 0 0 24px; }
+  .lang a { text-decoration: none; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; }
+  .item { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; }
+  .item h3 { font-size: 1rem; margin: 0 0 6px; }
+  .item dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }
+  .item dt { color: var(--muted); }
+  .item dd { margin: 0; }
+  @media (max-width: 520px) {
+    .item dl { grid-template-columns: 1fr; }
+    .item dd { margin-bottom: 6px; }
+  }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 56px 0 40px; }
+</style>
+</head>
+<body>
+<main>
+
+<nav class="lang"><a href="#ru">Русский</a><a href="#en">English</a></nav>
+
+<section id="ru" lang="ru">
+<h1>Политика конфиденциальности бота Astrum-AI</h1>
+<p class="meta">Действует с 16 октября 2026 года</p>
+
+<p>Astrum-AI — бот поддержки Discord-сервера проекта AstrumMC (сервер Minecraft). Здесь описано, какие данные бот обрабатывает, зачем, где и сколько они хранятся и как их удалить. Оператор бота — администрация проекта AstrumMC (далее — «мы»).</p>
+
+<h2>Где работает бот</h2>
+<p>Бот работает только на Discord-сервере AstrumMC и только в каналах, которые выбрала администрация: в тикетах поддержки, в канале помощи и в нескольких каналах сообщества для облака слов. Сообщения в остальных каналах и личные сообщения бот не обрабатывает. В канале помощи бот отвечает, только если его упомянули или ответили на его сообщение.</p>
+
+<h2>Какие данные мы обрабатываем</h2>
+
+<div class="item">
+<h3>Сообщения в тикетах и канале помощи</h3>
+<dl>
+  <dt>Что</dt><dd>Текст сообщения, ваше отображаемое имя в Discord, текст, распознанный со скриншота, и пометка о приложенном видео с его длительностью.</dd>
+  <dt>Зачем</dt><dd>Чтобы ответить на ваш вопрос.</dd>
+  <dt>Хранение</dt><dd>Последние 12 сообщений канала держатся в оперативной памяти бота как контекст беседы и стираются при его перезапуске. Эти данные передаются сервису ИИ (см. ниже).</dd>
+</dl>
+</div>
+
+<div class="item">
+<h3>Изображения и видео во вложениях</h3>
+<dl>
+  <dt>Что</dt><dd>Скриншоты и видео, приложенные к сообщению в тикете или канале помощи.</dd>
+  <dt>Зачем</dt><dd>Текст со скриншота распознаётся на нашем сервере (Tesseract), чтобы понять проблему. У видео читается только длительность.</dd>
+  <dt>Хранение</dt><dd>Не сохраняются: файл скачивается из Discord в память и сразу отбрасывается.</dd>
+</dl>
+</div>
+
+<div class="item">
+<h3>Сообщения в каналах облака слов</h3>
+<dl>
+  <dt>Что</dt><dd>Только текст сообщения и канал — без автора, ID пользователя и ID сообщения.</dd>
+  <dt>Зачем</dt><dd>Команда /wordcloud показывает администрации самые частые слова в чатах.</dd>
+  <dt>Хранение</dt><dd>В базе данных на нашем сервере, текст зашифрован (AES-256-GCM). Удаляется автоматически через 28 дней.</dd>
+</dl>
+</div>
+
+<div class="item">
+<h3>Учёт тикетов</h3>
+<dl>
+  <dt>Что</dt><dd>ID канала тикета, ID пользователя, открывшего тикет, и число ответов бота. Текст сообщений здесь не хранится.</dd>
+  <dt>Зачем</dt><dd>Чтобы бот отвечал в тикете не больше трёх раз и замолкал, когда в тикет пишет сотрудник.</dd>
+  <dt>Хранение</dt><dd>В базе данных на нашем сервере. Удаляем по запросу.</dd>
+</dl>
+</div>
+
+<div class="item">
+<h3>Технические журналы</h3>
+<dl>
+  <dt>Что</dt><dd>ID каналов и сообщений, в отдельных записях — отображаемое имя. Текст сообщений в журналы не пишется.</dd>
+  <dt>Зачем</dt><dd>Чтобы находить и исправлять ошибки бота.</dd>
+  <dt>Хранение</dt><dd>На нашем сервере до ближайшего обновления бота.</dd>
+</dl>
+</div>
+
+<h2>Кому передаются данные</h2>
+<ul>
+  <li><strong>Сервис ИИ.</strong> Чтобы составить ответ, бот отправляет текст вашего сообщения, распознанный текст скриншота, ваше отображаемое имя и несколько предыдущих сообщений беседы стороннему сервису ИИ с OpenAI-совместимым API (codex.sale). Данные отправляются только для составления ответа. Мы не используем ваши сообщения для обучения моделей ИИ; обработку данных самим сервисом регулируют его условия.</li>
+  <li><strong>Discord.</strong> Бот работает через платформу Discord, к ней применяется <a href="https://discord.com/privacy">политика конфиденциальности Discord</a>.</li>
+</ul>
+<p>Больше мы никому ваши данные не передаём и не продаём.</p>
+
+<h2>Безопасность</h2>
+<p>Соединения с Discord и с сервисом ИИ защищены TLS. Текст сообщений в архиве облака слов хранится в зашифрованном виде. Доступ к серверу бота есть только у технической администрации проекта.</p>
+
+<h2>Как узнать о своих данных или удалить их</h2>
+<p>Откройте тикет на сервере AstrumMC (<a href="https://discord.com/invite/Fau2zqr57D">https://discord.com/invite/Fau2zqr57D</a>) или напишите на <a href="mailto:bbijiabnpobatejib@gmail.com">bbijiabnpobatejib@gmail.com</a>. Мы ответим и удалим ваши данные в течение 7 дней.</p>
+<p>Текст в архиве облака слов хранится без привязки к автору, поэтому выделить в нём именно ваши сообщения нельзя. Он удаляется автоматически через 28 дней.</p>
+
+<h2>Возраст пользователей</h2>
+<p>Пользоваться Discord можно с 13 лет (в некоторых странах — с более старшего возраста). Бот не запрашивает возраст и не собирает другие данные, кроме перечисленных выше.</p>
+
+<h2>Изменения политики</h2>
+<p>Если бот начнёт обращаться с данными иначе, мы обновим эту страницу и дату вверху. Актуальная версия всегда находится по этой ссылке.</p>
+</section>
+
+<hr>
+
+<section id="en" lang="en">
+<h1>Astrum-AI Privacy Policy</h1>
+<p class="meta">Effective October 16, 2026</p>
+
+<p>Astrum-AI is the support bot of the Discord server of AstrumMC, a Minecraft server. This policy explains what data the bot processes, why, where and for how long it is stored, and how to have it deleted. The bot is operated by the AstrumMC team ("we").</p>
+
+<h2>Where the bot works</h2>
+<p>The bot works only in the AstrumMC Discord server and only in channels selected by our staff: support tickets, a help channel and a few community channels used for the word cloud. It does not process messages in other channels or direct messages. In the help channel it responds only when it is mentioned or someone replies to its message.</p>
+
+<h2>Data we process</h2>
+
+<div class="item">
+<h3>Messages in tickets and the help channel</h3>
+<dl>
+  <dt>What</dt><dd>The message text, your Discord display name, text recognized from an attached screenshot, and a note that a video of a given length was attached.</dd>
+  <dt>Why</dt><dd>To answer your question.</dd>
+  <dt>Storage</dt><dd>The last 12 messages of the channel are kept in the bot's memory as conversation context and are discarded when the bot restarts. This data is sent to the AI service (see below).</dd>
+</dl>
+</div>
+
+<div class="item">
+<h3>Image and video attachments</h3>
+<dl>
+  <dt>What</dt><dd>Screenshots and videos attached to a message in a ticket or the help channel.</dd>
+  <dt>Why</dt><dd>Text on a screenshot is recognized on our server (Tesseract) to understand the problem. For videos we read only the duration.</dd>
+  <dt>Storage</dt><dd>Not stored: the file is downloaded from Discord into memory and discarded immediately.</dd>
+</dl>
+</div>
+
+<div class="item">
+<h3>Messages in word cloud channels</h3>
+<dl>
+  <dt>What</dt><dd>Only the message text and the channel — no author, user ID or message ID.</dd>
+  <dt>Why</dt><dd>The /wordcloud command shows our staff the most frequent words in the chats.</dd>
+  <dt>Storage</dt><dd>In a database on our server, with the text encrypted (AES-256-GCM). Deleted automatically after 28 days.</dd>
+</dl>
+</div>
+
+<div class="item">
+<h3>Ticket records</h3>
+<dl>
+  <dt>What</dt><dd>The ticket channel ID, the ID of the user who opened the ticket and the number of bot replies. No message text.</dd>
+  <dt>Why</dt><dd>So the bot replies at most three times per ticket and goes silent once a staff member writes in it.</dd>
+  <dt>Storage</dt><dd>In a database on our server. Deleted on request.</dd>
+</dl>
+</div>
+
+<div class="item">
+<h3>Technical logs</h3>
+<dl>
+  <dt>What</dt><dd>Channel and message IDs and, in some entries, a display name. Message text is not written to the logs.</dd>
+  <dt>Why</dt><dd>To find and fix bugs in the bot.</dd>
+  <dt>Storage</dt><dd>On our server until the next bot update.</dd>
+</dl>
+</div>
+
+<h2>Who receives the data</h2>
+<ul>
+  <li><strong>AI service.</strong> To write an answer, the bot sends your message text, the text recognized from a screenshot, your display name and a few previous messages of the conversation to a third-party AI service with an OpenAI-compatible API (codex.sale). The data is sent only to generate the reply. We do not use your messages to train AI models; the service's own processing is governed by its terms.</li>
+  <li><strong>Discord.</strong> The bot runs on the Discord platform, which is covered by the <a href="https://discord.com/privacy">Discord Privacy Policy</a>.</li>
+</ul>
+<p>We do not share or sell your data to anyone else.</p>
+
+<h2>Security</h2>
+<p>Connections to Discord and to the AI service are protected with TLS. Message text in the word cloud archive is stored encrypted. Only the project's technical staff have access to the bot's server.</p>
+
+<h2>Accessing or deleting your data</h2>
+<p>Open a support ticket in the AstrumMC server (<a href="https://discord.com/invite/Fau2zqr57D">https://discord.com/invite/Fau2zqr57D</a>) or email <a href="mailto:bbijiabnpobatejib@gmail.com">bbijiabnpobatejib@gmail.com</a>. We will reply and delete your data within 7 days.</p>
+<p>Word cloud text is stored without any link to its author, so we cannot single out your messages in it. It is deleted automatically after 28 days.</p>
+
+<h2>Age</h2>
+<p>Discord can be used from the age of 13 (older in some countries). The bot does not ask for your age and does not collect any data other than listed above.</p>
+
+<h2>Changes</h2>
+<p>If the bot starts handling data differently, we will update this page and the date at the top. The current version is always available at this link.</p>
+</section>
+
+</main>
+</body>
+</html>
